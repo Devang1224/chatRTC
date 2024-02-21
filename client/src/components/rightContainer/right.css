@@ -1,0 +1,24 @@
+.right_container{
+    width: 100%;
+    height: 100%;
+    background-color: var(--color1);
+    display: flex;
+    flex: 2.5;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+.message{
+    justify-content: center;
+}
+
+.right_container .right_container_background{
+    width:clamp(15rem,35vw,35vw);
+    height:clamp(15rem,35vw,35vw);
+}
+
+@media only screen and (max-width:792px)
+{
+  
+}

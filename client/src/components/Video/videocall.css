@@ -1,0 +1,164 @@
+.videocall-container{
+    background-color: rgba(8, 6, 6, 0.867);
+    width: 100vw;
+    height: 100vh;
+    position:absolute;
+    top:0;
+    left:0;
+    z-index:200;
+    padding: 10px;
+}
+
+.stream-container{
+    background-color: rgba(80, 199, 199, 0.152);
+    width: 68.4%;
+    height: 85%;
+    position: relative;
+    top:2%;
+    left:15%;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.userStream-container{
+    background-color: rgba(80, 130, 199, 0.294);
+    width: 17.2rem;
+    height: 13rem;
+    position: absolute;
+    bottom:25%;
+    left:3%;
+    border-radius: 10px;
+  z-index: 300;
+  overflow: hidden;
+  cursor: move;
+
+}
+
+.remoteStreamContainer{
+    position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 10px;
+
+}
+
+.reactplayer{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 85%;
+}
+
+.callhandlers-container{
+
+    position:absolute;
+    bottom:5%;
+    left:49%;
+    transform: translateX(-50%);
+    width: 300px ;
+    display: flex;
+    justify-content: space-between;
+    z-index: 400;
+}
+
+
+
+.endCall{
+    background-color: rgba(255, 0, 0, 0.824);
+    border:none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+}
+.endCall:hover{
+    background-color: rgba(230, 68, 68, 0.824);
+}
+
+
+.callHandler-icon{
+    background-color: rgba(255, 0, 0, 0.824);
+    border:none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+}
+
+.callHandler-icon:hover{
+  background-color: rgba(230, 68, 68, 0.824);
+}
+
+
+
+.stream-container-content{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 12rem;
+    height: 12rem;
+}
+
+.stream-container-content h3{
+   font-size: 30px;
+   font-weight: 100;
+   color:white;
+   opacity: 0.5;
+}
+
+
+.connectionLoader {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: #fff;
+    box-shadow: 32px 0 #fff, -32px 0 #fff;
+    position: relative;
+    animation: flash 0.5s ease-out infinite alternate;
+  }
+  
+  @keyframes flash {
+    0% {
+      background-color: #FFF2;
+      box-shadow: 32px 0 #FFF2, -32px 0 #FFF;
+    }
+    50% {
+      background-color: #FFF;
+      box-shadow: 32px 0 #FFF2, -32px 0 #FFF2;
+    }
+    100% {
+      background-color: #FFF2;
+      box-shadow: 32px 0 #FFF, -32px 0 #FFF2;
+    }
+  }
+        
+
+
+@media only screen and (max-width:792px)
+{
+
+  .remoteStreamContainer{
+    position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 10px;
+
+}
+
+.reactplayer{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 85%;
+}
+
+}

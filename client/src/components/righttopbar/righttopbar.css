@@ -1,0 +1,204 @@
+.right_topbar{
+    width: 100%;
+    height: 9%;
+    display: flex;
+    align-items: center;
+    padding:5px;
+    /* background-color: rgba(0, 0, 0, 0.279); */
+    /* border-radius:20px; */
+    justify-content: space-between;
+
+}
+
+
+
+.right_topbar_dark .videocam button{
+    color:rgb(125, 122, 122);
+}
+
+.sender_container{
+    display: flex;
+    align-items: center;
+    gap:10px;
+    width: auto;
+    color:rgba(255, 255, 255, 0.843);
+
+}
+
+.sender_container img{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.sender_container h3{
+    font-weight: 400;
+}
+
+.videocam{
+    width: 30px;
+    height:30px;
+    margin-right: 10px;
+    cursor: pointer;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.videocam:hover{
+    background-color:rgba(175, 211, 226, 0.086);
+}
+
+.videocam button{
+    border:none;
+    background-color: transparent;
+    cursor: pointer;
+    color:#558BF2
+
+}
+
+
+@keyframes incomingCall {
+    from{
+            top:-100px;
+    }
+    to{
+         top:10px;
+    }
+}
+
+.incomingCallModal{
+    position: absolute;
+    top:10px;
+    left:50%;
+    height: 170px;
+    width: 300px;
+    background-color: white;
+    z-index: 100;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content:space-around;
+   padding:3px;
+    animation:incomingCall 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) alternate;
+
+}
+
+.incomingCall-headerContainer{
+    width: 100%;
+    padding:5px 0px 0px 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+   text-align: center;
+    
+    
+}
+.incomingCall-headerContainer h2{
+    font-weight: 100;
+    font-size: 15px;
+    opacity: 0.5;
+}
+
+.incomingCall-headerContainer .username{
+    font-weight: 300;
+    font-size: 28px;
+    opacity: 1;
+}
+
+
+.handleCall-container{
+
+width: 100%;
+display: flex;
+justify-content: space-around;
+padding-bottom: 10px;
+
+}
+
+
+
+
+
+
+
+.acceptCall{
+    cursor: pointer;
+    border:none;
+    background-color: green;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    transition: transform 0.1s ease;
+
+}
+
+
+.rejectCall{
+    cursor: pointer;
+    border:none;
+    background-color:red;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    transition: transform 0.1s ease;
+}
+
+.rejectCall:hover{
+    transform: translateY(-3px);
+    box-shadow: rgba(255, 0, 0, 0.609) 0px 10px 15px;
+
+}
+
+.acceptCall:hover{
+    transform: translateY(-3px);
+    box-shadow: rgba(62, 204, 31, 0.548) 0px 10px 15px;
+
+}
+
+
+.closeicon{
+    cursor: pointer;
+position: absolute;
+top:2px;
+right: 2px;
+border:none;
+background-color: white;
+}
+
+.callloader-container{
+    width: 100%;
+    height: 50px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    padding-top:15px;
+}
+
+.callloader {
+    position: absolute;
+    opacity: 0.5;
+    width: 55px;
+    height: 30px;
+    background-repeat: no-repeat;
+    background-image: linear-gradient(#000000b5 50px, transparent 0),
+                      linear-gradient(#000000b5 50px, transparent 0),
+                      linear-gradient(#000000b5 50px, transparent 0),
+                      linear-gradient(#000000b5 50px, transparent 0);
+    background-position: 0px center, 15px center, 30px center, 45px center, 60px center, 75px center, 90px center;
+    animation: rikSpikeRoll 0.65s linear infinite alternate;
+  }
+@keyframes rikSpikeRoll {
+  0% { background-size: 10px 3px;}
+  16% { background-size: 10px 50px, 10px 3px, 10px 3px, 10px 3px, 10px 3px, 10px 3px}
+  33% { background-size: 10px 30px, 10px 50px, 10px 3px, 10px 3px, 10px 3px, 10px 3px}
+  50% { background-size: 10px 10px, 10px 30px, 10px 50px, 10px 3px, 10px 3px, 10px 3px}
+  66% { background-size: 10px 3px, 10px 10px, 10px 30px, 10px 50px, 10px 3px, 10px 3px}
+  83% { background-size: 10px 3px, 10px 3px,  10px 10px, 10px 30px, 10px 50px, 10px 3px}
+  100% { background-size: 10px 3px, 10px 3px, 10px 3px,  10px 10px, 10px 30px, 10px 50px}
+}
+    

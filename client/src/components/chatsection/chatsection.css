@@ -1,0 +1,14 @@
+.chat_container{
+    width:100%;
+    height: 81%;
+    padding: 40px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    overflow-y: auto;
+   padding-right:50px;
+   color:white;
+   box-shadow: rgba(0, 0, 0, 0.391) 0px 0px 5px 0px inset, rgba(3, 0, 0, 0.5) 0px 0px inset;
+   border-radius:20px;
+}
+

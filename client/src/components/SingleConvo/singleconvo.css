@@ -1,0 +1,35 @@
+.singleconvo_container{
+    width: 100%;
+    min-height: 70px;
+    margin-bottom: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+   border-radius: 50px;
+  
+}
+
+.chattingContainer{
+  background-color: #558BF2;
+
+}
+
+.singleconvo_container:hover{
+  background-color: #558BF2;
+}
+
+.singleconvo_container img{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.singleconvo_container h3{
+
+    width: 100%;
+    padding-left: 10px;
+    font-weight: 400;
+}
+

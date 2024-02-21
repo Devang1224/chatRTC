@@ -1,0 +1,33 @@
+
+
+.searchresult_container{
+    width:100%;
+    min-height: 70px;
+   border-radius: 30px;
+    border:1px solid rgba(0, 0, 0, 0.104);
+    margin-bottom: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+   overflow: hidden;
+}
+
+.searchresult_container:hover{
+ background: #558BF2;
+
+}
+
+.searchresult_container img{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.searchresult_container h3{
+    width: 100%;
+    padding-left: 10px;
+    font-weight: 400;
+}
+

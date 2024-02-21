@@ -1,0 +1,158 @@
+
+.register_container{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color:#191919;
+
+}
+
+.form-box {
+    max-width: 300px;
+    background-color: #252525;
+    overflow: hidden;
+    border-radius: 16px;
+    color:rgba(255, 255, 255, 0.958);
+  }
+  
+  .registerform {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 32px 24px 24px;
+    gap: 16px;
+    text-align: center;
+  }
+  
+  /*Form text*/
+  .title {
+    font-weight: bold;
+    font-size: 1.6rem;
+  }
+  
+  .subtitle {
+    font-size: 1rem;
+    color: #666;
+  }
+  
+  /*Input boxes*/
+  .form-container {
+    overflow: hidden;
+    border-radius: 8px;
+    background-color: #fff;
+    margin: 0.5rem 0 .5rem;
+    width: 100%;
+
+  }
+  
+  .registerinput {
+    color:white;
+    border: 0;
+    outline: 0;
+    height: 40px;
+    width: 100%;
+    border-bottom: 1px solid #3e3d3d;
+    font-size: .9rem;
+    padding: 8px 15px;
+    background-color:#4B4B4B;
+  }
+  
+  .form-section {
+    text-align:center;
+    padding: 16px;
+    font-size: .85rem;
+    background-color: #e0ecfb;
+    /* box-shadow: rgb(0 0 0 / 8%) 0 -1px; */
+  }
+  
+  .form-section p{
+    color:black;
+  }
+  .form-section a {
+    font-weight: bold;
+    color: #0066ff;
+    transition: color .3s ease;
+  }
+  
+  .form-section a:hover {
+    color: #005ce6;
+    text-decoration: underline;
+  }
+  
+  /*Button*/
+  .registerform button {
+    background-color: #4F46E5;
+
+    color: #fff;
+    border: 0;
+    border-radius: 24px;
+    padding: 10px 16px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color .3s ease;
+  }
+  
+  .registerform button:hover {
+    background-color: #005ce6;
+  }
+
+  
+
+.userImage_container{
+  width:100%;
+  display: flex;
+  justify-content: center;
+}
+
+.image_container{
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-position: center;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.5s ease-in;
+}
+
+
+
+.image_container img{
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+
+.image_container .uploadPic{
+  display: none;
+  position: absolute;
+  top:50%;
+  left: 50%;
+  width:100%;
+  height: 100%;
+  transform: translate(-50%,-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.1s ease;
+  transition-delay: 0.2s; 
+}
+
+.uploadPic .uploadPicIcon {
+  display: none;
+}
+
+.image_container:hover .uploadPic {
+  opacity: 1;
+  display: flex;
+  background-color: rgba(0,0,0,0.3);
+}
+
+.image_container:hover .uploadPicIcon {
+  display: inline;
+}
