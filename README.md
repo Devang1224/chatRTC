@@ -63,7 +63,7 @@ $ npm run dev
 <img width="1440" alt="Screenshot 2024-02-21 at 3 48 41 PM" src="https://github.com/Devang1224/chatRTC/assets/97470914/2aab942c-cf76-40ee-bb32-bc6d4efbbddb">
 <img width="1440" alt="Screenshot 2024-02-21 at 3 49 11 PM" src="https://github.com/Devang1224/chatRTC/assets/97470914/5a415641-0481-4bf1-be79-3a0bfc3404cc">
 
-<h2 align="center">Searching functionality</h2>
+<h2 align="center">Search functionality</h2>
 <img width="1440" alt="Screenshot 2024-02-21 at 3 49 40 PM" src="https://github.com/Devang1224/chatRTC/assets/97470914/24a6b79a-b391-4f7f-9e8f-e1e0edacff05">
 
 <h2 align="center">Incoming Call</h2>
