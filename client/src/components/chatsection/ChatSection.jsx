@@ -9,7 +9,7 @@ import "./chatsection.css";
 import Chat from "../chat/Chat";
 import { userRequest } from "../../ApiCalls";
 import { receiverContext } from "../../contextApi/ReceiverProvider";
-import Loader from "./loader/Loader";
+import Loader from "../ui/loader/Loader";
 import InputSection from "../inputsection/InputSection";
 import { userContext } from "../../contextApi/Usercontext";
 import { useSocket } from "../../contextApi/SocketProvider";

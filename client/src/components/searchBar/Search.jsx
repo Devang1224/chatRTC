@@ -7,7 +7,7 @@ import { userRequest } from "../../ApiCalls";
 import { debounce } from "lodash";
 import { userContext } from "../../contextApi/Usercontext";
 
-const Search = () => {
+const Search = ({setConvosUpdated}) => {
   const [searchUser, setSearchUser] = useState([]);
   const [searchBox, setSearchBox] = useState(false);
   const { data } = useContext(userContext);
@@ -60,6 +60,7 @@ const Search = () => {
                         url={item.url}
                         key={item._id}
                         box={setSearchBox}
+                        setConvosUpdated={setConvosUpdated}
                       />
                     )
                 )

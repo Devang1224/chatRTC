@@ -1,12 +1,11 @@
-import React, { createContext, useContext, useMemo, useState } from 'react'
+import React, { createContext, useContext, useMemo } from 'react'
 import {io} from "socket.io-client";
 
 
 export const socketContext = createContext(null);
 
-export const useSocket = ()=>{              // custom hook now you dont have to use useContext in every single file
+export const useSocket = ()=>{         
     return useContext(socketContext);
-
 }
 
 

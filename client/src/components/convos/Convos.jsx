@@ -3,14 +3,12 @@ import "./convos.css";
 import SingleConvo from "../SingleConvo/SingleConvo";
 import { userContext } from "../../contextApi/Usercontext";
 import { userRequest } from "../../ApiCalls";
-import ConvosLoader from "./convosLoader/ConvosLoader";
+import ConvosLoader from "../ui/convosLoader/ConvosLoader";
 
-const Convos = () => {
+const Convos = ({ convosUpdated, setConvosUpdated }) => {
   const [convos, setConvos] = useState(null);
   const { data, dispatch } = useContext(userContext);
   const [chattingTo, setChattingTo] = useState("");
-
-
 
   useEffect(() => {
     const fetchConvos = async () => {
@@ -21,9 +19,10 @@ const Convos = () => {
         console.log(err);
       }
     };
+    setConvosUpdated(false);
 
     data.UserId && fetchConvos();
-  }, [data.UserId]);
+  }, [data.UserId, convosUpdated]);
 
   return (
     <div className="convos_container">

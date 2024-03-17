@@ -16,6 +16,8 @@ const Left = () => {
     setOpenMenu((prev) => !prev);
   }
 
+const [convosUpdated,setConvosUpdated] = useState(false)
+
   return (
     <>
       <div
@@ -24,8 +26,8 @@ const Left = () => {
         }`}
       >
         <Topbar />
-        <Search />
-        <Convos />
+        <Search setConvosUpdated={setConvosUpdated}/>
+        <Convos convosUpdated={convosUpdated} setConvosUpdated={setConvosUpdated}/>
 
         <div className="menu_container" onClick={handleOpenMenu}>
           {openMenu ? (
