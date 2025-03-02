@@ -5,10 +5,13 @@ const conversation = new mongoose.Schema(
        userData:{
 
             userId:{
-                type:String
+                type:String,
+                required:true
             },
             userName:{
-                type:String
+                type:String,
+                required:true
+
              },
             userImage:{
                 type:String
@@ -18,10 +21,14 @@ const conversation = new mongoose.Schema(
         receiverData:{
                
             receiverId:{
-                type:String
+                type:String,
+                required:true
+
             },
             receiverName:{
-                type:String
+                type:String,
+                required:true
+
             },
             receiverImage:{
                 type:String
@@ -31,17 +38,38 @@ const conversation = new mongoose.Schema(
         senderData:{
                
             senderId:{
-                type:String
+                type:String,
+                required:true
             },
             senderName:{
-                type:String
+                type:String,
+                required:true
             },
             senderImage:{
                 type:String
             }
-        }
+        },
 
+        messages:[
+            {
+                senderId: {
+                  type: String,
+                },
+                text: {
+                  type: String,
+                },
+                files:{
+                  type:String
+                },
+                createdAt:{
+                    type:Date,
+                    default:Date.now()
+                }
+            
+              },
+        ]
 
+ 
     },{timestamps:true}
 );
 

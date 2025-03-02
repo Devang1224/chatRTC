@@ -12,14 +12,15 @@ const users = new schema(
 
     email:{
          type:String,
-         required:true
+         unique:true,
+         required:true,
     },
 
     password:{
         type: String,
         required: true
     },
-    url:{
+    profilePic:{
         type:String,
     }
 },{timestamps:true}

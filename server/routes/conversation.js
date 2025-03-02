@@ -39,7 +39,7 @@ router.post("/conversation", async (req, res) => {
   });
 
 
-//get convos
+//get conversations
 router.get("/:userId",async(req,res)=>{
       
     try{

@@ -2,15 +2,17 @@ const express = require("express");
 const mongoose = require("mongoose")
 const userRoute = require("./routes/user")
 const conversationRoute = require("./routes/conversation")
+const authRoutes = require('./routes/auth');
 const cors = require('cors')
 const connectDB = require('./Db/db');
 const socketio = require('socket.io');
 const http = require('http');
 
+
 const app = express();
 
 app.use(cors({
-     origin: "https://chatrtc.netlify.app" // https://chatrtc.netlify.app  //http://localhost:3001
+     origin: "*" // https://chatrtc.netlify.app  //http://localhost:3001
   }));
 app.use(express.json());
 
@@ -20,13 +22,13 @@ connectDB(); //establishing mongodb connection
 const server = http.createServer(app);
 const io = socketio(server, {
     cors: {
-      origin: "https://chatrtc.netlify.app",
+      origin: "http://localhost:3001",
       methods: ["GET", "POST"]
     }
   });;
 
 
-
+app.use('/auth',authRoutes)
 app.use("/user",userRoute);
 app.use("/chat",conversationRoute)
 
@@ -38,6 +40,7 @@ const socketToUser = new Map();
 
 io.on("connection", (socket) => {
 
+  socket.emit("is_online",true);
 
 socket.on("userJoinedTheChat",(data)=>{  
   const {User} = data;
@@ -116,6 +119,12 @@ socket.on("callRejected",({to})=>{
     socket.on("newMessage",(message)=>{
        io.to(message.conversationId).emit('Message', message);
     })
+
+socket.on('disconnect',()=>{
+  const user = socketToUser.get(socket.id);
+  socketToUser.delete(socket.id);
+  userToSocket.delete(user);
+})
 
 
   });

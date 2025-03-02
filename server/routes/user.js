@@ -1,68 +1,59 @@
 const express = require("express")
 const router = express.Router()
 const user = require("../models/user")
+const { authorisedUser } = require("../middleware/auth");
 
 
-// register
-router.post("/register",async (req,res)=>{
-   const name = (req.body.username).trim();
-    const newUser = new user({
-        username: name,
-        email: req.body.email,
-        password: req.body.password,
-        url:req.body.url
-    })
 
-   try{
-        const savedUser = await newUser.save();
-        res.status(200).json({savedUser,id:savedUser._id});
-    }
 
-    catch(err){
-      res.status(400).json("Username already exists")
-    }
+router.use(authorisedUser);
 
-})
-
-router.post("/login", async (req, res) => {
-    try {
-        const userData = await user.findOne({ username: req.body.username });
-
-        if(!userData)
-        {
-            res.status(400).json("User not found")
-        }
-
-        else if(userData?.password == req.body.password){
-         const data = {
-                      id: userData.id,
-                      username: userData.username,
-                      url:userData.url
-                     };
-         res.status(200).json(data);
-       }
-       else{
-        res.status(401).json("Incorrect password");
-
-       }
-
-    } catch (err) {
-        res.status(500).json(err.message);
-    }
-});
-
-// find user
+// find users
 router.post("/find", async (req, res) => {
-    const query = req.body.username;
-  
+    const {username} = req.body;
+     const limit = req.body.limit || 20;
+     const page = req.body.page || 1;
+
     try {
-      const users = await user.find({ username: { $regex: query, $options: "i" } });
-      res.status(200).json(users);
+      const users = await user.find({ username: { $regex: username, $options: "i" } }).select("-password")
+                              .limit(limit) 
+                              .skip(limit*(page-1))
+                              .sort({createdAt:-1});
+
+
+       return res.status(200).json({
+         message:"Users fetched successfully",
+         data:users
+      });
     } catch (err) {
       res.status(404).json(err);
     }
   });
 
+
+ router.put("/updateProfilePic",async(req,res)=>{
+  try{
+      const {
+        userId,
+        profilePic
+      } = req.body;
+
+      // getting the profilepic link via firebase
+      const updatedUserDetails = await user.findByIdAndUpdate({profilePic:profilePic}).select("-password");
+      return res.status(200).json({
+        message:"Profile picture updated successfully",
+        data:{
+          profilePic:updatedUserDetails?.profilePic
+        }
+      })
+
+
+  }catch(err){
+    return res.status(500).json({
+      message:"Error while updating the profile picture"
+    })
+  }
+ })
 
 
 module.exports = router
