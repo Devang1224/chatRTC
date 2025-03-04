@@ -10,17 +10,36 @@ router.post('/register',async(req,res)=>{
      
          const body = req.body;
          const data = await registerSchema.safeParse(body);
-         if(data.success){
-              const newUser = await user.create({
-                username:body.username,
-                email:body.email,
-                password:body.password,
-                profilePic:body.profilePic || ""
-              });
+         if(!data.success){
+            return res.send(400).json({
+                message:data.error.format()
+            })
          }
-        res.status(200).json({
-            message:"User registered successfully"
-        })
+        
+         const existingUserEmail = await user.findOne({email:body.email});
+         if(existingUser){
+            return res.send(401).json({
+                message:"Email already registered"
+            })
+         }
+         
+         const existingUsername = await user.findOne({username:body.username});
+         if(existingUsername){
+            return res.send(401).json({
+                message:"Please select a unique username"
+            })
+         }
+
+              const newUser = await user.create({
+                username: body.username,
+                email: body.email,
+                password: body.password,
+                profilePic: body.profilePic || "",
+              });
+
+              res.status(200).json({
+                message: "User registered successfully",
+              });
 
     }catch(err){
         res.status(500).json({
@@ -43,8 +62,6 @@ router.post('/login',async (req,res)=>{
       const userData = await user.findOne({
         $or:[{email:body.data.email},{username:body.data.username}]
       })
-
-
       
       if(!userData){
        return res.status(404).json({

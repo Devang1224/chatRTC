@@ -2,58 +2,69 @@ const mongoose = require("mongoose")
 
 const conversation = new mongoose.Schema(
     {
-       userData:{
+    //    userData:{
 
-            userId:{
-                type:String,
-                required:true
-            },
-            userName:{
-                type:String,
-                required:true
+    //         userId:{
+    //             type:String,
+    //             required:true
+    //         },
+    //         userName:{
+    //             type:String,
+    //             required:true
 
-             },
-            userImage:{
-                type:String
-            }
-        },
+    //          },
+    //         userImage:{
+    //             type:String
+    //         }
+    //     },
 
-        receiverData:{
+        // receiverData:{
                
-            receiverId:{
-                type:String,
-                required:true
+        //     receiverId:{
+        //         type:String,
+        //         required:true
 
-            },
-            receiverName:{
-                type:String,
-                required:true
+        //     },
+        //     receiverName:{
+        //         type:String,
+        //         required:true
 
-            },
-            receiverImage:{
-                type:String
-            }
-        },
+        //     },
+        //     receiverImage:{
+        //         type:String
+        //     }
+        // },
 
-        senderData:{
+        // senderData:{
                
-            senderId:{
-                type:String,
-                required:true
-            },
-            senderName:{
-                type:String,
-                required:true
-            },
-            senderImage:{
-                type:String
-            }
+        //     senderId:{
+        //         type:String,
+        //         required:true
+        //     },
+        //     senderName:{
+        //         type:String,
+        //         required:true
+        //     },
+        //     senderImage:{
+        //         type:String
+        //     }
+        // },
+        createrId:{
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"Users",
+            required:true
         },
-
+        partnerId:{
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"Users",
+            required:true
+        },
         messages:[
             {
-                senderId: {
-                  type: String,
+                senderData: {
+                  type: mongoose.Schema.Types.ObjectId,
+                  ref:"Users",
+                  required:true
                 },
                 text: {
                   type: String,
@@ -67,9 +78,8 @@ const conversation = new mongoose.Schema(
                 }
             
               },
-        ]
+        ],
 
- 
     },{timestamps:true}
 );
 

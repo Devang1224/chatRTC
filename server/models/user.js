@@ -22,7 +22,13 @@ const users = new schema(
     },
     profilePic:{
         type:String,
-    }
+    },
+    conversations:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"conversations"
+        }
+    ]
 },{timestamps:true}
 )
 

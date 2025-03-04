@@ -1,40 +1,41 @@
 const express = require("express")
 const router = express.Router()
-const convo = require("../models/conversation")
+const Conversation = require("../models/conversation")
 const message = require("../models/messages")
 
 
 
-//saving convo
+//create conversation
 router.post("/conversation", async (req, res) => {
-    const { userData, receiverData,senderData } = req.body;
+    const { createrId, partnerId } = req.body;
   
     try {
       // Check if the conversation already exists
-      const existingConvo = await convo.findOne({
+      const existingConvo = await Conversation.findOne({
         $or: [
-          {
-            "userData.userId": userData.userId,
-            "receiverData.receiverId": receiverData.receiverId
-          },
-          {
-            "userData.userId": receiverData.receiverId,
-            "receiverData.receiverId": userData.userId
-          }
+          { createrId: createrId, partnerId: partnerId },
+          { createrId: partnerId, partnerId: createrId }
         ]
       });
 
-      if (existingConvo) {
-        // Conversation already exists, return it without saving
-        res.status(200).json("already exists");
-      } else {
+      if (!existingConvo) {
         // Conversation does not exist, save it
-        const newConvo = new convo(req.body);
-        const savedConvo = await newConvo.save();
-        res.status(200).json(savedConvo);
+        const newConversation =  await Conversation.create({createrId,partnerId});
+        return res.status(200).json({
+          message:"Converstion created successfully",
+          data:newConversation
+        });
+      }
+      else{
+        return res.status(200).json({
+          message:"Conversation already exists"
+        })
       }
     } catch (err) {
-      res.status(500).json(err);
+      res.status(500).json({
+        message:"Error while creating a new conversation",
+        error:err
+      });
     }
   });
 
@@ -42,19 +43,29 @@ router.post("/conversation", async (req, res) => {
 //get conversations
 router.get("/:userId",async(req,res)=>{
       
+const {userId} = req?.params?.userId;
+
+if (!mongoose.Types.ObjectId.isValid(userId)) {
+  return res.status(400).json({ message: "Invalid userId format" });
+}
+
     try{
-        const convos = await convo.find(
-            {
-                $or: [
-                  { "userData.userId": req.params.userId },
-                  { "receiverData.receiverId": req.params.userId }
-                ]
-              }
-        );
-         res.status(200).json(convos);
+      const userConversations = await Conversation.find({
+        $or: [{ createrId: userId }, { partnerId: userId }],
+      }).sort({updatedAt:-1})
+        .populate("createrId","username email profilePic")
+        .populate("partnerId","username email profilePic");
+        
+         res.status(200).json({
+          message:"Conversations fetched successfully",
+          data:userConversations
+         });
     }
     catch(err){
-        res.status(500).json(err)
+        res.status(500).json({
+          message:"Unable to find convesations at this moment",
+          error:err
+        })
     }
 })
 
