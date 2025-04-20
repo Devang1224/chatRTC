@@ -5,36 +5,56 @@ import ReceiverProvider, {
   receiverContext,
 } from "../../contextApi/ReceiverProvider";
 import { openMenuContext } from "../../contextApi/OpenMenu";
+import moment from "moment";
+import { getTimeAgo } from "../../utils/getTimeAgo";
 
-const SingleConvo = (props) => {
+const SingleConvo = ({item,setChattingTo,chattingTo}) => {
+
   const { dispatch } = useContext(receiverContext);
+  const {data} = useContext(userContext);
   const { openMenu, setOpenMenu } = useContext(openMenuContext);
-
+  // const convoId = item._id;
+  const partnerDetails = item.participants[0]._id === data.userDetails?._id ? item.participants[1] : item.participants[0];
+// id senderData id 
 
   const handleClick = () => {
     dispatch({
-      type: "RECEIVER",
+      type: "PARTNER",
       payload: {
-        name: props.name,
-        id: props.id,
-        convoid: props.convoId,
-        url: props.url,
+        convoid: item?._id,
+        partnerDetails:partnerDetails
       },
     });
-    props.setChattingTo(props.name)
+    setChattingTo(partnerDetails?._id)
     setOpenMenu(false);
     
   };
 
+  // console.log("item",item)
+
   return (
-    <div className={`singleconvo_container ${props.name===props.chattingTo && "chattingContainer"}`} onClick={handleClick}>
+    <div className={`singleconvo_container ${partnerDetails?._id===chattingTo && "chattingContainer"}`} onClick={handleClick}>
       <img
         src={
-          props.url ||
+          partnerDetails?.profilePic ||
           "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/1200px-Default_pfp.svg.png"
         }
       />
-      <h3>{props.name}</h3>
+      <div>
+        <p>{partnerDetails?.username}</p>
+         {
+          item.lastMessage && (
+            <div className="lastMessageContainer">
+              <p className="lastMessage">
+               {item.lastMessage}
+              </p>
+              <span className="lastMessageTime">
+                {getTimeAgo(item.updatedAt)}
+              </span>
+            </div>
+          )
+         }
+      </div>
     </div>
   );
 };

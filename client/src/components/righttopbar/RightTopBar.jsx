@@ -39,13 +39,14 @@ const RightTopBar = () => {
 
   // function to start video call
   const startVideoCall = () => {
-    const User = data.Username;
-    const convoId = receiverData.ConvoId;
-    const Receiver = receiverData.ReceiverName;
+    const User = data?.userDetails?.username;
+    const convoId = receiverData?.ConvoId;
+    const Receiver = receiverData?.partnerDetails?.username;
     socket.emit("roomJoined", { User, convoId, Receiver });
     setOnGoingCall(true);
   };
 
+  console.log("receiverData",receiverData)
 
   // when user joins the chat room
   const handleUserJoined = useCallback(({ User, id }) => {
@@ -148,10 +149,16 @@ const RightTopBar = () => {
 
   // checking if stream tracks are coming from the remote
   useEffect(() => {
-    peer.peer.addEventListener("track", async (ev) => {
-      const remoteStream = ev.streams[0];
+    peer?.peer?.addEventListener("track", async (ev) => {
+      const remoteStream = ev?.streams[0];
       setRemoteStream(remoteStream);
     });
+    return () => {
+      peer?.peer?.removeEventListener("track", async (ev) => {
+        const remoteStream = ev?.streams[0];
+        setRemoteStream(remoteStream);
+      });
+    };
   }, []);
 
   useEffect(() => {
@@ -300,11 +307,11 @@ const RightTopBar = () => {
       <div className="sender_container">
         <img
           src={
-            receiverData?.ReceiverImage ||
+            receiverData?.partnerDetails?.profilePic ||
             "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/1200px-Default_pfp.svg.png"
           }
         />
-        <h3>{receiverData?.ReceiverName}</h3>
+        <h3>{receiverData?.partnerDetails?.username}</h3>
       </div>
 
       <div className="videocam">

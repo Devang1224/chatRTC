@@ -17,6 +17,7 @@ const InputSection = () => {
   const { data } = useContext(userContext);
   const { socket } = useSocket();
   const [emojiContainer, setEmojiContainer] = useState(false);
+  const {dispatch} = useContext(receiverContext);
 
   const handleKey = (e) => {
     e.code == "Enter" && handleSend();
@@ -26,19 +27,27 @@ const InputSection = () => {
     try {
       if (message.trim()?.length != 0) {
         setMessage((prev) => prev.trim());
-        const res = await userRequest.post("/chat/messages", {
+        const res = await userRequest.post("/chat/message/send", {
           conversationId: receiverData.ConvoId,
-          senderId: data.UserId, // sender's Id
-          senderImage: data.UserDp,
-          text: message,
+          sender: data.userDetails._id, // sender's Id
+          senderImage: data.userDetails.profilePic,
+          text: message.trim(),
         });
 
+       dispatch({
+        type:"UPDATE_CONVO",
+        payload:{
+          lastMessage:message,
+          updatedAt:res.data?.data?.createdAt,
+          _id:receiverData.ConvoId
+        }
+       })
         socket.emit("newMessage", {
           conversationId: receiverData.ConvoId,
-          senderId: data.UserId, // sender's Id
-          senderImage: data.UserDp,
+          sender: data.userDetails._id, // sender's Id
+          senderImage: data.userDetails.profilePic,
           text: message,
-          _id: receiverData.ConvoId + 4,
+          _id: res.data?.data?._id,
         });
       }
     } catch (err) {

@@ -21,8 +21,8 @@ const Logout = ()=>{
    
 
     <div className='user_container'>
-        <img src={data.UserDp || "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/1200px-Default_pfp.svg.png"}/>
-        <p>{data.Username}</p>
+        <img src={data.userDetails?.profilePic || "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/1200px-Default_pfp.svg.png"}/>
+        <p>{data.userDetails?.username}</p>
     </div>
 
     <button onClick={Logout} className="logoutBtn">

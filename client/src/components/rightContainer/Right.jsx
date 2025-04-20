@@ -10,10 +10,11 @@ const Right = () => {
 
 
 const {receiverData} = useContext(receiverContext);
+console.log('partnerDetails ',receiverData)
 
   return (
 
-  receiverData.ReceiverName
+    receiverData?.ConvoId
   ?
   <div className='right_container'>
       <RightTopBar/>

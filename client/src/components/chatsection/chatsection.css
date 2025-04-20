@@ -1,14 +1,46 @@
 .chat_container{
     width:100%;
     height: 81%;
-    padding: 40px 40px;
+    padding: 20px 20px;
     display: flex;
     flex-direction: column;
     gap: 20px;
-    overflow-y: auto;
-   padding-right:50px;
+    overflow-y: auto;     
    color:white;
    box-shadow: rgba(0, 0, 0, 0.391) 0px 0px 5px 0px inset, rgba(3, 0, 0, 0.5) 0px 0px inset;
    border-radius:20px;
+}
+
+.message-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.date-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 15px 0;
+  position: relative;
+  text-align: center;
+  color: var(--text-grey-medium);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.date-divider::before,
+.date-divider::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.date-divider::before {
+  margin-right: 10px;
+}
+
+.date-divider::after {
+  margin-left: 10px;
 }
 

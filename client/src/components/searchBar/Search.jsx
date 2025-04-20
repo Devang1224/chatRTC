@@ -7,7 +7,7 @@ import { userRequest } from "../../ApiCalls";
 import { debounce } from "lodash";
 import { userContext } from "../../contextApi/Usercontext";
 
-const Search = ({setConvosUpdated}) => {
+const Search = () => {
   const [searchUser, setSearchUser] = useState([]);
   const [searchBox, setSearchBox] = useState(false);
   const { data } = useContext(userContext);
@@ -18,17 +18,18 @@ const Search = ({setConvosUpdated}) => {
       if (value) {
         setSearchBox(true);
         const res = await userRequest.post("/user/find", { username: value });
-        setSearchUser(res.data);
+        console.log("res",res)
+        setSearchUser(res.data?.data);
       } else {
-        setSearchUser([]); // Set searchUser to an empty array when the search input is empty
-        setSearchBox(false); // removing the search results box
+        setSearchUser([]); 
+        setSearchBox(false); 
       }
     } catch (err) {
       console.log(err);
     }
   };
 
-  const debouncedSearch = debounce(handleSearch, 200); // Adjust the debounce delay as needed (e.g., 300 milliseconds)
+  const debouncedSearch = debounce(handleSearch, 200); 
 
   return (
     <>
@@ -37,7 +38,7 @@ const Search = ({setConvosUpdated}) => {
           <input
             id="search"
             type="search"
-            placeholder="Search or start new chat"
+            placeholder="Search chats"
             onChange={debouncedSearch}
             onFocus={(event) => {
               event.target.setAttribute("autocomplete", "off");
@@ -49,18 +50,17 @@ const Search = ({setConvosUpdated}) => {
           <div className="search_results">
             {
               searchUser.length == 0 ? (
-                <p>No results found</p>
+                <p style={{padding:'5px 10px'}}>No results found</p>
               ) : (
                 searchUser?.map(
                   (item) =>
-                    item._id !== data.UserId && (
+                    item._id !== data.userDetails?._id && (
                       <Searchresult
                         username={item.username}
                         id={item._id}
                         url={item.url}
                         key={item._id}
                         box={setSearchBox}
-                        setConvosUpdated={setConvosUpdated}
                       />
                     )
                 )

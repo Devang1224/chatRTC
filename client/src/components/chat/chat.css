@@ -14,6 +14,8 @@
   font-size: 20px;
   opacity: 0.7;
 }
+
+
 .userChat:hover .trashChat{
    display: block;
    cursor: pointer;
@@ -32,20 +34,27 @@
 .trashChat:active .userChat{
 
 }
-
-
-.receiver .userChat .chatContent{
-   flex-direction: row-reverse;
-     
+.userChat .chatContent{
+    display: flex;
 }
 
+.receiver .userChat .chatContent{
+    flex-direction: row-reverse; 
+    justify-content: flex-end;
+}
+
+
+.receiver .chatContent p{
+    background:white;
+    color: black; 
+}
 
 
 .chatContent p{
     /* max-width: fit-content; */
-    background-color:#558BF2; 
+    background-color:var(--bg-pink-primary); 
     padding: 10px 20px;
-    border-radius: 0px 20px 20px 20px;
+    border-radius: 0px 10px 10px 10px;
 }
 
 .userChat img{
@@ -58,26 +67,37 @@
     object-fit: cover;
 }
 
-.chatContent{
-    display: flex;
-
-}
 
 
 .user{
    align-self:flex-end;
 }
 
-.receiver .chatContent p{
-    background:white;
-    color: black; 
+.user .userChat .chatContent{
+    flex-direction: row-reverse;
+    justify-content: flex-start;
 }
+
 
 .user .userChat .chatContent p{
     max-width: max-content;
     padding: 10px 20px;
     border-radius: 10px 0px 10px 10px;
+    
+}
 
+.user .userChat .chatTime{
+    text-align: right;
+}
+.receiver .userChat .chatTime{
+    text-align: left;
+}
+
+
+.chatTime{
+    font-size: 10px;
+    color: var(--text-grey-medium);
+    margin-top: 5px;
 }
 
 .user .userChat img{

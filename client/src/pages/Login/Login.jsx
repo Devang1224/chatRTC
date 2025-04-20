@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./login.css";
 import { Link, useNavigate } from "react-router-dom";
 import { userRequest } from "../../ApiCalls";
@@ -8,41 +8,48 @@ const Login = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const { dispatch } = useContext(userContext);
+  const data = useContext(userContext);
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const username = e.target[0].value;
     const password = e.target[1].value;
 
-    await userRequest
-      .post("/user/login", { username, password })
-      .then((res) => {
-        dispatch({
+    try{
+    const res = await userRequest.post("/auth/login", { userDetail:username, password });
+
+        await dispatch({
           type: "SAVE_USER",
           payload: {
-            username: res.data.username,
-            id: res.data.id,
-            url: res.data.url,
+              userData: res.data?.data?.userData,
+              token: res.data?.data?.token,
           },
         });
-        setError("");
-        navigate("/");
-      })
-      .catch((err) => {
-        setError(err?.response?.data);
-      });
+          setError("");
+          navigate("/");
+      }catch(err){
+        setError(err?.response?.data?.message);
+      };
   };
+
+// useEffect(()=>{
+//   console.log("data",data)
+//   if(data?.data?.token){
+//     navigate("/")
+//   }
+// },[data.token])
 
   return (
     <div className="login_container">
       <form className="loginform" onSubmit={handleSubmit}>
         <p className="form-title">Sign in to your account</p>
         <div className="input-container">
-          <input type="text" placeholder="Enter username" required />
+          <input type="text" placeholder="devang" required />
           <span></span>
         </div>
         <div className="input-container">
-          <input type="password" placeholder="Enter password" required />
+          <input type="password" placeholder="devangmehra" required />
         </div>
         {error && (
           <p style={{ color: "#f61818ea", textAlign: "center" }}>{error}</p>

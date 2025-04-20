@@ -15,16 +15,20 @@
     overflow: hidden;
 }
 
+
 .search_bar input{
     width: 100%;
     outline: none;
     border:none;
     font-size: 15px;
-    background-color:#4B4B4B;
+    background-color:var(--bg-black-dark2);
     padding:5px;
     padding-left:20px;
     color:white;
 
+}
+.search_bar input::placeholder{
+    color:var(--text-grey-medium);
 }
 
 .search_results{

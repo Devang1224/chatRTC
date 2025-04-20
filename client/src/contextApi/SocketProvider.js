@@ -10,8 +10,12 @@ export const useSocket = ()=>{
 
 
 const SocketProvider = ({children}) => {
-
-const socket = useMemo(()=>io("https://chatapprtc-backend-production.up.railway.app"),[])
+// https://chatapprtc-backend-production.up.railway.app
+const socket = useMemo(()=>io("http://localhost:3000",{
+  auth:{
+    token:JSON.parse(localStorage.getItem("user"))?.token || ""
+  }
+}),[])
 // http://localhost:3000
 // https://chatapprtc-backend-production.up.railway.app
   return (

@@ -11,7 +11,7 @@
 .main_container{
     width: 100vw;
     height: 100vh;
-    background-color: #2C2C2C;
+    background-color: var(--bg-black-dark);
     display: flex;
     justify-content: center;
     align-items: center;

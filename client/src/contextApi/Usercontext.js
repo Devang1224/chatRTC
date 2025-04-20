@@ -11,30 +11,28 @@ const UsercontextProvider = ({children}) => {
 
 
   const INITIAL_STATE = {
-    Username:JSON.parse(localStorage.getItem('user'))?.username,
-    UserId:JSON.parse(localStorage.getItem('user'))?.id,
-    UserDp:JSON.parse(localStorage.getItem('user'))?.url,
+    token: JSON.parse(localStorage.getItem("user"))?.token || "",
+    userDetails: JSON.parse(localStorage.getItem("user"))?.userData || null
   }
   
   
+
   const userReducer = (state, action) => {
   
     switch (action.type) {
       case "SAVE_USER":
-        const storedUser = localStorage.setItem('user', JSON.stringify(action.payload));
+       localStorage.setItem("user",JSON.stringify(action.payload));
         return {
           ...state,
-          Username: action.payload.username,
-          UserId: action.payload.id,
-          UserDp:action.payload.url,
+          token:action.payload.token,
+          userDetails:action.payload.userData
         };
       case "LOGOUT":
-        localStorage.removeItem('user');
+        localStorage.removeItem("user")
         return {
           ...state,
-          Username: '',
-          UserId: '',
-          UserDp:''
+          token: '',
+          userDetails:null
         };
 
       default:

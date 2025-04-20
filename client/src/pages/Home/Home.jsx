@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import"./home.css"
 import Left from '../../components/leftContainer/Left'
 import Right from '../../components/rightContainer/Right'
@@ -12,8 +12,11 @@ const Home = () => {
   const {data} = useContext(userContext);
   const {openMenu,setOpenMenu} = useContext(openMenuContext);
 
-  const User = data.Username;
-socket.emit("userJoinedTheChat",{User})
+  const User = data.userDetails.username;
+
+  useEffect(()=>{
+    socket.emit("userJoinedTheChat",{User});
+  },[])
 
   return (
     <ReceiverProvider>

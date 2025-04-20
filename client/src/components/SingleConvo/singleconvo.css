@@ -6,17 +6,17 @@
     display: flex;
     align-items: center;
     padding: 10px;
-   border-radius: 50px;
+   border-radius: 20px;
   
 }
 
 .chattingContainer{
-  background-color: #558BF2;
+  background-color: var(--bg-pink-light);
 
 }
 
 .singleconvo_container:hover{
-  background-color: #558BF2;
+  background-color:  var(--bg-pink-light);
 }
 
 .singleconvo_container img{
@@ -26,10 +26,36 @@
     object-fit: cover;
 }
 
-.singleconvo_container h3{
+.singleconvo_container > div{
+   width: 100%;
+}
 
+.singleconvo_container > div .lastMessageContainer{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.singleconvo_container > div .lastMessage{
+  font-size: 12px;
+  color: var(--text-grey-medium);
+  margin-top:5px;
+}
+
+.singleconvo_container > div .lastMessageTime{
+  font-size: 12px;
+  color: var(--text-grey-medium);
+  margin-top:5px;
+}
+
+.singleconvo_container > div p{
     width: 100%;
     padding-left: 10px;
     font-weight: 400;
+    max-width: 80%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 

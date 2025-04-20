@@ -15,23 +15,24 @@ import { userContext } from "../../contextApi/Usercontext";
 import { useSocket } from "../../contextApi/SocketProvider";
 
 const ChatSection = () => {
-  const [chats, setChats] = useState(null);
+  const [chats, setChats] = useState([]);
   const scrollRef = useRef();
   const { receiverData } = useContext(receiverContext);
   const { data } = useContext(userContext);
   const { socket } = useSocket();
+  const { dispatch } = useContext(receiverContext);
 
   const getChats = useCallback(async () => {
     try {
       const res = await userRequest.get(
-        `/chat/messages/${receiverData.ConvoId}`
+        `/chat/message/get?convoId=${receiverData?.ConvoId}&userId=${data?.userDetails?._id}`
       );
-      setChats(res.data);
+      setChats(res.data?.data);
     } catch (err) {
       console.log(err);
     }
     const convoid = receiverData.ConvoId;
-    const username = data.Username;
+    const username = data?.userDetails?.username;
     socket.emit("privateChat", { convoid, username });
   }, [data.Username, receiverData.ConvoId, socket]);
 
@@ -42,37 +43,46 @@ const ChatSection = () => {
   // sending message
   useEffect(() => {
     socket.on("Message", (message) => {
+      console.log("newMessage", message);
+      dispatch({
+        type:"UPDATE_CONVO",
+        payload:{
+          lastMessage:message?.text,
+          updatedAt:new Date(),
+          _id:receiverData.ConvoId
+        }
+       })
       setChats((prev) => [...prev, message]);
     });
+
+    return ()=>{
+      socket.off("Message");
+    }
   }, []);
 
   // sending message
 
   useEffect(() => {
-    scrollRef.current?.scrollIntoView({ bhaviour: "smooth" });
+    scrollRef.current?.scrollIntoView({ bhaviour: "auto" });
   }, [chats]);
+
+  // console.log("chats", chats);
 
   return (
     <>
       <div className="chat_container">
         {chats == null ? (
-          <Loader/>
+          <Loader />
         ) : chats?.length != 0 ? (
-          chats.map((item, index) => (
+          chats?.map((item, index) => (
             <div
               ref={scrollRef}
               key={index}
               className={`chat ${
-                item.senderId == data.UserId ? "user" : "receiver"
+                item.sender === data.userDetails._id ? "user" : "receiver"
               }`}
             >
-              <Chat
-                text={item.text}
-                id={item.senderId}
-                url={item.senderImage}
-                key={item._id}
-                messageId={item._id}
-              />
+              <Chat key={item._id} item={item} />
             </div>
           ))
         ) : (
