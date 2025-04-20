@@ -10,38 +10,41 @@ router.post('/register',async(req,res)=>{
      
          const body = req.body;
          const data = await registerSchema.safeParse(body);
+         console.log("data",data)
          if(!data.success){
-            return res.send(400).json({
+            return res.status(400).json({
                 message:data.error.format()
             })
          }
         
          const existingUserEmail = await user.findOne({email:body.email});
-         if(existingUser){
-            return res.send(401).json({
+         if(existingUserEmail){
+            return res.status(401).json({
                 message:"Email already registered"
             })
          }
          
          const existingUsername = await user.findOne({username:body.username});
          if(existingUsername){
-            return res.send(401).json({
+            return res.status(401).json({
                 message:"Please select a unique username"
             })
          }
 
               const newUser = await user.create({
-                username: body.username,
-                email: body.email,
-                password: body.password,
+                username: body.username.trim(),
+                email: body.email.trim(),
+                password: body.password.trim(),
                 profilePic: body.profilePic || "",
               });
 
-              res.status(200).json({
+            return res.status(200).json({
                 message: "User registered successfully",
+                success:true 
               });
 
     }catch(err){
+        console.log("err",err)
         res.status(500).json({
             messsage:"Error occurred while registering! Try again later",
             error:err
@@ -52,7 +55,7 @@ router.post('/register',async(req,res)=>{
 router.post('/login',async (req,res)=>{
     try{
       const body = await loginSchema.safeParse(req.body);
-      console.log(body)
+
       if(!body.success){
             return res.status(400).json({
                 message:body.error.format()
@@ -60,7 +63,7 @@ router.post('/login',async (req,res)=>{
       }
     
       const userData = await user.findOne({
-        $or:[{email:body.data.email},{username:body.data.username}]
+        $or:[{email:body.data.userDetail},{username:body.data.userDetail}]
       })
       
       if(!userData){
@@ -81,13 +84,15 @@ router.post('/login',async (req,res)=>{
         password:userData.password
       },process.env.JWT_SECKEY,{expiresIn:'7d'});
 
+     userData.password = undefined;
 
     res.status(200).json({
-        message:"User has been logged in successfully",
+        message:"User has logged in successfully",
         data:{
             userData:userData,
             token:userToken
-        }
+        },
+        success:true
     });
 
     }catch(err){

@@ -1,6 +1,6 @@
 const express = require("express")
 const router = express.Router()
-const user = require("../models/user")
+const User = require("../models/user")
 const { authorisedUser } = require("../middleware/auth");
 
 
@@ -15,7 +15,7 @@ router.post("/find", async (req, res) => {
      const page = req.body.page || 1;
 
     try {
-      const users = await user.find({ username: { $regex: username, $options: "i" } }).select("-password")
+      const users = await User.find({ username: { $regex: username, $options: "i" } }).select("-password")
                               .limit(limit) 
                               .skip(limit*(page-1))
                               .sort({createdAt:-1});
@@ -39,7 +39,7 @@ router.post("/find", async (req, res) => {
       } = req.body;
 
       // getting the profilepic link via firebase
-      const updatedUserDetails = await user.findByIdAndUpdate({profilePic:profilePic}).select("-password");
+      const updatedUserDetails = await User.findByIdAndUpdate({profilePic:profilePic}).select("-password");
       return res.status(200).json({
         message:"Profile picture updated successfully",
         data:{
@@ -54,6 +54,8 @@ router.post("/find", async (req, res) => {
     })
   }
  })
+
+
 
 
 module.exports = router

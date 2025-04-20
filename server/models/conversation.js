@@ -1,86 +1,22 @@
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
 
-const conversation = new mongoose.Schema(
-    {
-    //    userData:{
-
-    //         userId:{
-    //             type:String,
-    //             required:true
-    //         },
-    //         userName:{
-    //             type:String,
-    //             required:true
-
-    //          },
-    //         userImage:{
-    //             type:String
-    //         }
-    //     },
-
-        // receiverData:{
-               
-        //     receiverId:{
-        //         type:String,
-        //         required:true
-
-        //     },
-        //     receiverName:{
-        //         type:String,
-        //         required:true
-
-        //     },
-        //     receiverImage:{
-        //         type:String
-        //     }
-        // },
-
-        // senderData:{
-               
-        //     senderId:{
-        //         type:String,
-        //         required:true
-        //     },
-        //     senderName:{
-        //         type:String,
-        //         required:true
-        //     },
-        //     senderImage:{
-        //         type:String
-        //     }
-        // },
-        createrId:{
-            type:mongoose.Schema.Types.ObjectId,
-            ref:"Users",
-            required:true
-        },
-        partnerId:{
-            type:mongoose.Schema.Types.ObjectId,
-            ref:"Users",
-            required:true
-        },
-        messages:[
-            {
-                senderData: {
-                  type: mongoose.Schema.Types.ObjectId,
-                  ref:"Users",
-                  required:true
-                },
-                text: {
-                  type: String,
-                },
-                files:{
-                  type:String
-                },
-                createdAt:{
-                    type:Date,
-                    default:Date.now()
-                }
-            
-              },
-        ],
-
-    },{timestamps:true}
+const ConversationSchema = new mongoose.Schema(
+  {
+    participants:[
+      {
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"User",
+      }
+    ],
+    lastMessage: {
+      type:String,
+      default:""
+    },
+  },
+  { timestamps: true }
 );
 
-module.exports = mongoose.model("conversations",conversation)
+ConversationSchema.index({ participants: 1 });
+ConversationSchema.index({ participants: 1, updatedAt: -1 });
+
+module.exports = mongoose.model("Conversation", ConversationSchema);

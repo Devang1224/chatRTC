@@ -2,7 +2,7 @@ const mongoose = require("mongoose")
 
 const schema = mongoose.Schema
 
-const users = new schema(
+const UserSchema = new schema(
 {
     username:{
         type:String,
@@ -15,21 +15,15 @@ const users = new schema(
          unique:true,
          required:true,
     },
-
     password:{
         type: String,
         required: true
     },
     profilePic:{
         type:String,
-    },
-    conversations:[
-        {
-            type:mongoose.Schema.Types.ObjectId,
-            ref:"conversations"
-        }
-    ]
+    }
 },{timestamps:true}
+
 )
 
-module.exports  = mongoose.model("Users",users)
+module.exports = mongoose.model("User", UserSchema);

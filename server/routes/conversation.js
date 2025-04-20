@@ -1,37 +1,61 @@
 const express = require("express")
 const router = express.Router()
 const Conversation = require("../models/conversation")
-const message = require("../models/messages")
+const Message = require("../models/messages");
+const { authorisedUser } = require("../middleware/auth");
+const { default: mongoose } = require("mongoose");
+const User = require("../models/user");
 
 
+
+
+router.use(authorisedUser);
 
 //create conversation
 router.post("/conversation", async (req, res) => {
     const { createrId, partnerId } = req.body;
   
     try {
-      // Check if the conversation already exists
+      
+       if(partnerId === createrId){
+        return res.status(400).json({ message: "Invalid IDs" });
+       }
+
+      if (!createrId || !partnerId ) {
+        return res.status(400).json({ message: "Both user IDs are required" });
+      }
+
+      if (!mongoose.Types.ObjectId.isValid(createrId) || !mongoose.Types.ObjectId.isValid(partnerId)) {
+        return res.status(400).json({ message: "Invalid createrId or partnerId format" });
+      }
+
       const existingConvo = await Conversation.findOne({
-        $or: [
-          { createrId: createrId, partnerId: partnerId },
-          { createrId: partnerId, partnerId: createrId }
-        ]
+        participants:{
+          $all:[createrId,partnerId]
+        }
+      });
+      console.log(existingConvo)
+      if(existingConvo){
+        return res.status(409).json({
+          data:existingConvo,
+          message:"Conversation already exists"
+        })
+      }
+
+      let newConversation = await Conversation.create({
+        participants: [createrId, partnerId],
       });
 
-      if (!existingConvo) {
-        // Conversation does not exist, save it
-        const newConversation =  await Conversation.create({createrId,partnerId});
+      newConversation = await newConversation.populate("participants", "username profilePic");
+
         return res.status(200).json({
           message:"Converstion created successfully",
           data:newConversation
         });
-      }
-      else{
-        return res.status(200).json({
-          message:"Conversation already exists"
-        })
-      }
+
+
     } catch (err) {
+  console.log(err)
       res.status(500).json({
         message:"Error while creating a new conversation",
         error:err
@@ -41,27 +65,27 @@ router.post("/conversation", async (req, res) => {
 
 
 //get conversations
-router.get("/:userId",async(req,res)=>{
+router.get("/:userId",async (req,res)=>{
       
-const {userId} = req?.params?.userId;
+const {userId} = req?.params;
 
-if (!mongoose.Types.ObjectId.isValid(userId)) {
+if (!userId || !mongoose.Types.ObjectId.isValid(userId)) {
   return res.status(400).json({ message: "Invalid userId format" });
 }
 
     try{
-      const userConversations = await Conversation.find({
-        $or: [{ createrId: userId }, { partnerId: userId }],
-      }).sort({updatedAt:-1})
-        .populate("createrId","username email profilePic")
-        .populate("partnerId","username email profilePic");
-        
-         res.status(200).json({
+      
+      let userConversations = await Conversation.find({ participants: userId })
+                                      .populate("participants","username profilePic")
+                                      .sort({updatedAt:-1});
+
+        return res.status(200).json({
           message:"Conversations fetched successfully",
           data:userConversations
          });
     }
     catch(err){
+      console.log(err)
         res.status(500).json({
           message:"Unable to find convesations at this moment",
           error:err
@@ -71,16 +95,57 @@ if (!mongoose.Types.ObjectId.isValid(userId)) {
 
 
 // saving messages
-router.post("/messages",async(req,res)=>{
+router.post("/message/send",async(req,res)=>{
 
-const newMessage =  new message(req.body)
+const {
+  sender,
+  conversationId,
+  text,
+  files,
+} = req.body;
 
 try{
-      const savedMessage = await newMessage.save();
-      res.status(200).json(savedMessage);
+
+    if(!conversationId || !sender ){
+      return res.status(400).json({
+        message:`Sender Id and Conversation Id are required`
+      })
+    }
+    if (!mongoose.Types.ObjectId.isValid(sender) || !mongoose.Types.ObjectId.isValid(conversationId)) {
+      return res.status(400).json({ message: "Invalid senderId or conversationId format" });
+    }
+
+   const conversation = await Conversation.findById(conversationId);
+
+    if (!conversation) {
+      return res.status(404).json({ message: "Conversation not found" });
+    }
+
+    if(!conversation.participants.includes(sender)){
+      return res.status(403).json({ message: "You are not authorized to send messages to this conversation" });
+    }
+
+    const newMessage = await Message.create({
+       conversation:conversationId,
+       sender:sender,
+       text:text,
+       files:files
+    });
+
+    conversation.lastMessage = newMessage.text;
+    await conversation.save();
+
+      return res.status(200).json({
+        message:"message saved successfully",
+        data:newMessage
+      });
 }
 catch(err){
-    res.status(500).json(err);
+
+   return res.status(500).json({
+      messages:"Unable to save message at this moment",
+      error:err
+    });
 }
 
 
@@ -88,31 +153,48 @@ catch(err){
 
 // get messages
 
-router.get("/messages/:convoId",async(req,res)=>{
+router.get("/message/get",async(req,res)=>{
 
-    try{
-        const messages = await message.aggregate([
+const {userId,convoId} = req.query;
+const page = Number(req.query.page) || 1;
+const limit = Number(req.query.limit) || 20;
 
-            {
-                $match:{conversationId:req.params.convoId}
-            },
-             {
-                $sort:{createdAt:1}
-             },
-             {
-                $project:{
-                    senderId:1,
-                    text:1,
-                    senderImage:1
-                }
-            }
-        ]); 
+if (!userId || !convoId) {
+  return res.status(400).json({ message: "userId and conversationId are required" });
+}
 
-        res.status(200).json(messages);
+const conversation = await Conversation.findById(convoId);
+if (!conversation) {
+  return res.status(404).json({ message: "Conversation not found" });
+}
 
-    }
+if (!conversation.participants?.includes(userId)) {
+  return res.status(403).json({ message: "You are not authorized to view this conversation" });
+}
+
+
+  try{
+    const totalMessages = await Message.countDocuments({ conversation: convoId });
+    const messages = await Message.find({ conversation: convoId })
+    .sort({ createdAt: 1 })
+    .skip((page - 1) * limit)
+    .limit(limit);
+    
+      
+    return res.status(200).json({
+      message: "Messages fetched successfully",
+      page,
+      limit,
+      totalMessages: messages.length,
+      data: messages,
+    });
+  }
     catch(err){
-      res.status(500).json(err)
+      console.log(err)
+      return res.status(500).json({
+        message: "Unable to fetch messages at this moment",
+        error: err.message,
+      });
     }
 })
 
@@ -122,7 +204,7 @@ router.get("/messages/:convoId",async(req,res)=>{
 router.post("/messages/:messageId",async (req,res)=>{
 
    try{
-       const res = await message.findByIdAndDelete(req.params.messageId);
+       const res = await Message.findByIdAndDelete(req.params.messageId);
    }
    catch(err){
     console.log(err);
