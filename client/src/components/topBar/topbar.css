@@ -20,12 +20,17 @@
    
 }
 
-.user_container img{
+.user_avatar {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background-position: center;
-    object-fit: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 20px;
+    font-weight: 600;
+    text-transform: uppercase;
 }
 
 .user_container p

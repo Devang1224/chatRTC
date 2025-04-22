@@ -14,7 +14,7 @@
 }
 
 .searchresult_container:hover{
- background: #558BF2;
+ background: #558cf270;
 
 }
 
@@ -31,3 +31,17 @@
     font-weight: 400;
 }
 
+
+.user_avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 20px;
+    font-weight: 600;
+    text-transform: uppercase;
+    flex-shrink: 0;
+}

@@ -56,11 +56,11 @@ const Search = () => {
                   (item) =>
                     item._id !== data.userDetails?._id && (
                       <Searchresult
-                        username={item.username}
+                        item={item}
                         id={item._id}
                         url={item.url}
                         key={item._id}
-                        box={setSearchBox}
+                        setSearchBox={setSearchBox}
                       />
                     )
                 )

@@ -6,17 +6,27 @@
     display: flex;
     align-items: center;
     padding: 10px;
-   border-radius: 20px;
-  
+    border-radius: 20px;
+    overflow: hidden;
 }
 
 .chattingContainer{
   background-color: var(--bg-pink-light);
-
 }
 
 .singleconvo_container:hover{
   background-color:  var(--bg-pink-light);
+}
+
+.singleconvo_container .imageContainer{
+  display: flex;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  overflow: clip;
+  flex-shrink: 0;
 }
 
 .singleconvo_container img{
@@ -26,36 +36,60 @@
     object-fit: cover;
 }
 
-.singleconvo_container > div{
-   width: 100%;
+.singleconvo_container .contentContainer{
+   display: flex;
+   flex-direction: column;
+   flex: 1;
+   min-width: 0; /* This is important for text truncation to work */
 }
 
-.singleconvo_container > div .lastMessageContainer{
-  width: 100%;
+.lastMessageContainer{
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  width: 100%;
+  gap: 10px;
 }
 
-.singleconvo_container > div .lastMessage{
+.lastMessage{
   font-size: 12px;
   color: var(--text-grey-medium);
-  margin-top:5px;
+  margin-top: 5px;
+  flex: 1;
+  min-width: 0; /* This is important for text truncation to work */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.singleconvo_container > div .lastMessageTime{
+.lastMessageTime{
   font-size: 12px;
   color: var(--text-grey-medium);
-  margin-top:5px;
+  margin-top: 5px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-left: auto;
 }
 
 .singleconvo_container > div p{
-    width: 100%;
     padding-left: 10px;
     font-weight: 400;
-    max-width: 80%;
+    max-width: 70%;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
 }
 
+
+
+.user_avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 20px;
+  font-weight: 600;
+  text-transform: uppercase;
+}

@@ -1,21 +1,19 @@
 import React, { useContext, useEffect, useState } from "react";
-import "./register.css"
+import "./register.css";
 import { Link } from "react-router-dom";
 import { userRequest } from "../../ApiCalls";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { userContext } from "../../contextApi/Usercontext";
-import CameraAltIcon from '@mui/icons-material/CameraAlt';
-import { uploadfile } from "./Uploadimage";
+import CameraAltIcon from "@mui/icons-material/CameraAlt";
+import { uploadfile } from "../../utils/Uploadimage";
 import RegisterLoader from "./registerLoader/RegisterLoader";
 import * as Yup from "yup";
-import { Formik } from 'formik';
+import { Formik } from "formik";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import { use } from "react";
-
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 const RegisterUserSchema = Yup.object({
   username: Yup.string()
@@ -50,109 +48,91 @@ const InitialValues = {
   email: "",
   password: "",
   confirmPassword: "",
-}
+};
 
 const Register = () => {
+  const [isLoading, setLoading] = useState(false);
+  const [imageUrl, setImageUrl] = useState("");
+  const { dispatch } = useContext(userContext);
+  const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const data = useContext(userContext);
 
+  const handleImage = async (e) => {
+    const file = e.target?.files[0];
+    const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
+    const maxSizeInBytes = 5 * 1024 * 1024;
 
-const [isLoading, setLoading] = useState(false); 
-const [imageUrl,setImageUrl] = useState("")
-const {dispatch} = useContext(userContext)
-const navigate = useNavigate();
-const [showPassword, setShowPassword] = useState(false);
-const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-const data = useContext(userContext);
-
-
-
-const handleImage = async(e)=>{
-  const file = e.target?.files[0];
-  const allowedTypes = ['image/jpeg', 'image/png','image/jpg'];
-  const maxSizeInBytes = 5 * 1024 * 1024;
-  
-
-  if (file && allowedTypes.includes(file.type)) {
-
-     if(file.size <= maxSizeInBytes)
-     {
-      try{
-        setLoading(true);
-        const url = await uploadfile(file);
-        setImageUrl(url)
-      }catch(err){
-        console.log(err);
-      }  
-      finally{
-        setLoading(false);
+    if (file && allowedTypes.includes(file.type)) {
+      if (file.size <= maxSizeInBytes) {
+        try {
+          setLoading(true);
+          console.log(file);
+          const url = await uploadfile(file);
+          setImageUrl(url);
+        } catch (err) {
+          console.log(err);
+        } finally {
+          setLoading(false);
+        }
+      } else {
+        toast.error("Image size should be less than 1Mb");
       }
-     }
-     else{
-       toast.error("Image size should be less than 1Mb")
-     } 
+    }
+  };
 
-  } 
+  const handleRegisterUser = async (values) => {
+    let body = {
+      username: values.username.trim(),
+      email: values.email.trim(),
+      password: values.password.trim(),
+    };
 
-}
+    if (imageUrl) {
+      body.profilePic = imageUrl;
+    }
 
+    try {
+      const res = await userRequest.post("/auth/register", body);
 
-const handleRegisterUser = async(values)=>{
-
-
-
-let body = {
-  username:values.username.trim(),
-  email:values.email.trim(),
-  password:values.password.trim(),
-}
-
-if(imageUrl){
-  body.profilePic = imageUrl;
-}
-
-try{
-
-  const res  = await userRequest.post("/auth/register",body);
-  
-  if(res.data.success){
-    toast.success('User registered successfully');
-    navigate("/login");
-  }
-  else{
-    toast.error("Error occurred while registering! Try again later");
-  }
-  console.log("signup data",res)
-  
-}catch(err){
-  console.log("error",err)
-  toast.error("Error occurred while registering! Try again later");
-}
-  //  dispatch({ 
+      if (res.data.success) {
+        toast.success("User registered successfully");
+        navigate("/login");
+      } else {
+        toast.error("Error occurred while registering! Try again later");
+      }
+      console.log("signup data", res);
+    } catch (err) {
+      console.log("error", err);
+      toast.error("Error occurred while registering! Try again later");
+    }
+    //  dispatch({
     //   type:"SAVE_USER",
     //   payload:{
-      //     username:res.data?.savedUser.username,
-      //     userId:res.data?.id,
-//     profilePic:imageUrl,
-//     token:res.data?.token
-//   }
-//  })
+    //     username:res.data?.savedUser.username,
+    //     userId:res.data?.id,
+    //     profilePic:imageUrl,
+    //     token:res.data?.token
+    //   }
+    //  })
+  };
 
-}
-
-useEffect(()=>{
-  if(data?.data?.token){
-    navigate("/")
-  }
-},[data.token])
+  useEffect(() => {
+    if (data?.data?.token) {
+      navigate("/");
+    }
+  }, [data.token]);
 
   return (
     <div className="register_container">
       <div className="form-box">
-        <div className="registerform" >
+        <div className="registerform">
           <span className="title">Sign up</span>
           <span className="subtitle">
             Create a free account with your email.
           </span>
-          <div className="userImage_container">
+          {/* <div className="userImage_container">
             {isLoading ? (
               <RegisterLoader />
             ) : (
@@ -179,7 +159,7 @@ useEffect(()=>{
                 />
               </div>
             )}
-          </div>
+          </div> */}
 
           <Formik
             initialValues={InitialValues}
@@ -193,7 +173,7 @@ useEffect(()=>{
               handleBlur,
               handleSubmit,
               isSubmitting,
-              touched
+              touched,
             }) => {
               return (
                 <form className="form-container" onSubmit={handleSubmit}>
@@ -205,9 +185,9 @@ useEffect(()=>{
                     className="registerinput"
                     placeholder="Enter username"
                   />
-                  {(touched.username && errors.username) &&
+                  {touched.username && errors.username && (
                     <p className="errorStyles">{errors.username}</p>
-                  }
+                  )}
                   <input
                     type="email"
                     value={values.email}
@@ -216,85 +196,106 @@ useEffect(()=>{
                     className="registerinput"
                     placeholder="Enter email"
                   />
-                  {(touched.email && errors.email) &&
+                  {touched.email && errors.email && (
                     <p className="errorStyles">{errors.email}</p>
-                  }
-                  <div style={{
-                    display:"flex",
-                    alignItems:"center",
-                    position:"relative"
-                  }}>
-
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    value={values.password}
-                    onChange={handleChange("password")}
-                    onBlur={handleBlur("password")}
-                    className="registerinput" 
-                    placeholder="Enter password"
+                  )}
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      position: "relative",
+                    }}
+                  >
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      value={values.password}
+                      onChange={handleChange("password")}
+                      onBlur={handleBlur("password")}
+                      className="registerinput"
+                      placeholder="Enter password"
                     />
-                    <span onClick={()=>setShowPassword(!showPassword)}>
-                      {showPassword ? <VisibilityIcon sx={{
-                        fontSize:"1.2rem",
-                        color:"white",
-                        position:"absolute",
-                        right:"10px",
-                        cursor:"pointer",
-                        top:"50%",  
-                        transform:"translateY(-50%)",
-
-                      }}/> : <VisibilityOffIcon sx={{
-                        fontSize:"1.2rem",
-                        color:"white",
-                        position:"absolute",
-                        right:"10px",
-                        cursor:"pointer",
-                        top:"50%",
-                        transform:"translateY(-50%)",
-                      }}/>}
+                    <span onClick={() => setShowPassword(!showPassword)}>
+                      {showPassword ? (
+                        <VisibilityIcon
+                          sx={{
+                            fontSize: "1.2rem",
+                            color: "white",
+                            position: "absolute",
+                            right: "10px",
+                            cursor: "pointer",
+                            top: "50%",
+                            transform: "translateY(-50%)",
+                          }}
+                        />
+                      ) : (
+                        <VisibilityOffIcon
+                          sx={{
+                            fontSize: "1.2rem",
+                            color: "white",
+                            position: "absolute",
+                            right: "10px",
+                            cursor: "pointer",
+                            top: "50%",
+                            transform: "translateY(-50%)",
+                          }}
+                        />
+                      )}
                     </span>
                   </div>
-                  {(touched.password && errors.password) &&
+                  {touched.password && errors.password && (
                     <p className="errorStyles">{errors.password}</p>
-                  }
-                  <div style={{
-                    display:"flex",
-                    alignItems:"center",
-                    position:"relative"
-                  }}>
-
-                  <input
-                    type={showConfirmPassword ? "text" : "password"}
-                    value={values.confirmPassword}
-                    onChange={handleChange("confirmPassword")}
-                    onBlur={handleBlur("confirmPassword")}
-                    className="registerinput"
-                    placeholder="Confirm password"
+                  )}
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      position: "relative",
+                    }}
+                  >
+                    <input
+                      type={showConfirmPassword ? "text" : "password"}
+                      value={values.confirmPassword}
+                      onChange={handleChange("confirmPassword")}
+                      onBlur={handleBlur("confirmPassword")}
+                      className="registerinput"
+                      placeholder="Confirm password"
                     />
 
-                    <span onClick={()=>setShowConfirmPassword(!showConfirmPassword)}>
-                      {showConfirmPassword ? <VisibilityIcon sx={{
-                        fontSize:"1.2rem",
-                        color:"white",
-                        position:"absolute",
-                        right:"10px",
-                        cursor:"pointer",
-                        top:"50%",
-                        transform:"translateY(-50%)",
-                      }}/> : <VisibilityOffIcon sx={{
-                        fontSize:"1.2rem",
-                        color:"white",
-                        position:"absolute",
-                        right:"10px",
-                        cursor:"pointer",
-                        top:"50%",
-                        transform:"translateY(-50%)",
-                      }}/>}
+                    <span
+                      onClick={() =>
+                        setShowConfirmPassword(!showConfirmPassword)
+                      }
+                    >
+                      {showConfirmPassword ? (
+                        <VisibilityIcon
+                          sx={{
+                            fontSize: "1.2rem",
+                            color: "white",
+                            position: "absolute",
+                            right: "10px",
+                            cursor: "pointer",
+                            top: "50%",
+                            transform: "translateY(-50%)",
+                          }}
+                        />
+                      ) : (
+                        <VisibilityOffIcon
+                          sx={{
+                            fontSize: "1.2rem",
+                            color: "white",
+                            position: "absolute",
+                            right: "10px",
+                            cursor: "pointer",
+                            top: "50%",
+                            transform: "translateY(-50%)",
+                          }}
+                        />
+                      )}
                     </span>
                   </div>
-                  {(touched.confirmPassword && errors.confirmPassword) &&
+                  {touched.confirmPassword && errors.confirmPassword && (
                     <p className="errorStyles">{errors.confirmPassword}</p>
-                  }
+                  )}
                   <button type="submit" disabled={isSubmitting}>
                     {isSubmitting ? "Signing up..." : "Sign up"}
                   </button>
@@ -302,7 +303,6 @@ useEffect(()=>{
               );
             }}
           </Formik>
-
         </div>
 
         <div className="form-section">

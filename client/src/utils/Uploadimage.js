@@ -4,9 +4,10 @@ import {
   uploadBytesResumable,
   getDownloadURL,
 } from "firebase/storage";
-import { storage } from "../../firebase";
+import { storage } from "../firebase";
 
 export function uploadfile(file) {
+  // console.log(file);
   return new Promise((resolve, reject) => {
     const metadata = {
       contentType: "image/jpeg",

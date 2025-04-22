@@ -305,12 +305,12 @@ const RightTopBar = () => {
   return (
     <div className="right_topbar">
       <div className="sender_container">
-        <img
-          src={
-            receiverData?.partnerDetails?.profilePic ||
-            "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/1200px-Default_pfp.svg.png"
-          }
-        />
+      <div
+          className="user_avatar"
+          style={{ background: receiverData?.partnerDetails?.profileGradient }}
+        >
+          {receiverData?.partnerDetails?.username?.charAt(0).toUpperCase()}
+        </div>
         <h3>{receiverData?.partnerDetails?.username}</h3>
       </div>
 

@@ -3,6 +3,7 @@ import { useContext } from 'react'
 
 
 
+
 export const userContext = createContext();
 
 
@@ -21,18 +22,18 @@ const UsercontextProvider = ({children}) => {
   
     switch (action.type) {
       case "SAVE_USER":
-       localStorage.setItem("user",JSON.stringify(action.payload));
+       localStorage.setItem("user",JSON.stringify({...action.payload}));
         return {
           ...state,
           token:action.payload.token,
-          userDetails:action.payload.userData
+          userDetails:action.payload.userData,
         };
       case "LOGOUT":
         localStorage.removeItem("user")
         return {
           ...state,
           token: '',
-          userDetails:null
+          userDetails:null,
         };
 
       default:

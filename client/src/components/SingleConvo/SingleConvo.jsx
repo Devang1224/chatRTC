@@ -34,13 +34,14 @@ const SingleConvo = ({item,setChattingTo,chattingTo}) => {
 
   return (
     <div className={`singleconvo_container ${partnerDetails?._id===chattingTo && "chattingContainer"}`} onClick={handleClick}>
-      <img
-        src={
-          partnerDetails?.profilePic ||
-          "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/1200px-Default_pfp.svg.png"
-        }
-      />
-      <div>
+     <div
+          className="user_avatar"
+          style={{ background: partnerDetails?.profileGradient }}
+        >
+          {partnerDetails?.username?.charAt(0).toUpperCase()}
+        </div>
+
+      <div className="contentContainer">
         <p>{partnerDetails?.username}</p>
          {
           item.lastMessage && (
