@@ -46,7 +46,7 @@ router.post("/conversation", async (req, res) => {
         participants: [createrId, partnerId],
       });
 
-      newConversation = await newConversation.populate("participants", "username profilePic");
+      newConversation = await newConversation.populate("participants", "username profilePic profileGradient");
 
         return res.status(200).json({
           message:"Converstion created successfully",
@@ -76,7 +76,7 @@ if (!userId || !mongoose.Types.ObjectId.isValid(userId)) {
     try{
       
       let userConversations = await Conversation.find({ participants: userId })
-                                      .populate("participants","username profilePic")
+                                      .populate("participants","username profilePic profileGradient")
                                       .sort({updatedAt:-1});
 
         return res.status(200).json({

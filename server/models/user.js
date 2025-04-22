@@ -21,6 +21,9 @@ const UserSchema = new schema(
     },
     profilePic:{
         type:String,
+    },
+    profileGradient:{
+      type:String
     }
 },{timestamps:true}
 

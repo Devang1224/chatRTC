@@ -11,7 +11,7 @@ router.use(authorisedUser);
 // find users
 router.post("/find", async (req, res) => {
     const {username} = req.body;
-     const limit = req.body.limit || 20;
+     const limit = req.body.limit || 30;
      const page = req.body.page || 1;
 
     try {

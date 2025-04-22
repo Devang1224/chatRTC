@@ -1,7 +1,8 @@
 const {Router} =  require("express");
 const { registerSchema, loginSchema } = require("../common/schema");
 const user = require("../models/user");
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
+const { getRandomGradient } = require("../utils/getRandomBackgroundColor");
 
 const router = Router();
 
@@ -30,12 +31,14 @@ router.post('/register',async(req,res)=>{
                 message:"Please select a unique username"
             })
          }
+           let randomGradient = getRandomGradient();
 
               const newUser = await user.create({
                 username: body.username.trim(),
                 email: body.email.trim(),
                 password: body.password.trim(),
                 profilePic: body.profilePic || "",
+                profileGradient:randomGradient,
               });
 
             return res.status(200).json({
@@ -71,7 +74,7 @@ router.post('/login',async (req,res)=>{
             message:"User not found"
         })
       }
-
+console.log("userData",userData);
       if(userData.password !== body.data.password){
        return res.status(400).json({
             message:"Incorrect password"
