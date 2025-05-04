@@ -11,7 +11,7 @@ export const useSocket = ()=>{
 
 const SocketProvider = ({children}) => {
 // https://chatapprtc-backend-production.up.railway.app
-const socket = useMemo(()=>io("http://localhost:3000",{
+const socket = useMemo(()=>io("https://chatapprtc-backend-production.up.railway.app",{
   auth:{
     token:JSON.parse(localStorage.getItem("user"))?.token || ""
   }
