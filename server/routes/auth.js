@@ -66,7 +66,10 @@ router.post('/login',async (req,res)=>{
       }
     
       const userData = await user.findOne({
-        $or:[{email:body.data.userDetail},{username:body.data.userDetail}]
+        $or:[
+            {email:{ $regex: new RegExp(body.data.userDetail, "i")}},
+            {username:{ $regex: new RegExp(body.data.userDetail, "i")}}
+          ]
       })
       
       if(!userData){
@@ -74,8 +77,8 @@ router.post('/login',async (req,res)=>{
             message:"User not found"
         })
       }
-console.log("userData",userData);
-      if(userData.password !== body.data.password){
+
+      if(!userData.comparePassword(body.data.password)){
        return res.status(400).json({
             message:"Incorrect password"
         })
@@ -84,7 +87,6 @@ console.log("userData",userData);
       const userToken = jwt.sign({
         email:userData.email,
         username:userData.username,
-        password:userData.password
       },process.env.JWT_SECKEY,{expiresIn:'7d'});
 
      userData.password = undefined;

@@ -22,7 +22,6 @@ function setupSocket(server) {
     
     try {
       const decoded =  jwt.verify(token, process.env.JWT_SECKEY);
-      console.log("decoded",decoded);
       socket.user = decoded; 
       next();
     } catch (error) {
@@ -62,6 +61,11 @@ function setupSocket(server) {
       console.log("roomData",data) ;
       userToSocket.set(User, socket.id);
       socketToUser.set(socket.id, User);
+      for (const room of socket.rooms) {
+        if (room !== socket.id) {
+          socket.leave(room);
+        }
+      }
       socket.join(roomId);
     });
 
@@ -103,6 +107,7 @@ function setupSocket(server) {
     });
 
     socket.on("newMessage", (message) => {
+      console.log("convo_user_message",message);
       io.to(message.conversationId).emit("Message", message);
     });
 

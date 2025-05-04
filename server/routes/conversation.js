@@ -172,13 +172,13 @@ if (!conversation.participants?.includes(userId)) {
   return res.status(403).json({ message: "You are not authorized to view this conversation" });
 }
 
-
+console.log("page",page);
   try{
     const totalMessages = await Message.countDocuments({ conversation: convoId });
     const messages = await Message.find({ conversation: convoId })
-    .sort({ createdAt: 1 })
     .skip((page - 1) * limit)
-    .limit(limit);
+    .limit(limit)
+    .sort({ createdAt: -1 });
     
       
     return res.status(200).json({
@@ -201,10 +201,14 @@ if (!conversation.participants?.includes(userId)) {
 
 // delete message
 
-router.post("/messages/:messageId",async (req,res)=>{
+router.delete("/messages/:messageId",async (req,res)=>{
 
    try{
        const res = await Message.findByIdAndDelete(req.params.messageId);
+       return res.status(200).json({
+        message:"Message deleted successfully",
+        data:res
+       })
    }
    catch(err){
     console.log(err);
