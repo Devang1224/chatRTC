@@ -13,7 +13,7 @@ var morgan = require('morgan')
 const app = express();
 
 app.use(cors({
-     origin: "http://localhost:3001" // https://chatrtc.netlify.app  //http://localhost:3001
+     origin: "https://chatrtc.netlify.app" // https://chatrtc.netlify.app  //http://localhost:3001
   }));
 app.use(express.json());
 app.use(morgan("dev"));
