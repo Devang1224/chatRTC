@@ -10,7 +10,7 @@ const Right = () => {
 
 
 const {receiverData} = useContext(receiverContext);
-console.log('partnerDetails ',receiverData)
+// console.log('partnerDetails ',receiverData)
 
   return (
 

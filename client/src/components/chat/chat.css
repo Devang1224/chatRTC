@@ -5,9 +5,10 @@
    margin-bottom:10px;
 }
 
-.trashChat{
+.user .userChat .trashChat{
     position: absolute;
    left:-20px;
+   top:10px;
 }
 
 .trashChat .trash_icon{
@@ -34,28 +35,29 @@
 .trashChat:active .userChat{
 
 }
-.userChat .chatContent{
+.chatContent{
     display: flex;
+    background-color:var(--bg-pink-primary); 
+    justify-content: flex-end;
+    padding: 10px 20px;
+    border-radius: 10px 0px 10px 10px;
+    max-width: max-content;
+    position: relative;
 }
 
 .receiver .userChat .chatContent{
     flex-direction: row-reverse; 
     justify-content: flex-end;
+    border-radius: 0px 10px 10px 10px;
+
 }
 
 
 .receiver .chatContent p{
-    background:white;
-    color: black; 
+    /* background:white; */
+    color: 'white'; 
 }
 
-
-.chatContent p{
-    /* max-width: fit-content; */
-    background-color:var(--bg-pink-primary); 
-    padding: 10px 20px;
-    border-radius: 0px 10px 10px 10px;
-}
 
 .userChat img{
     width: 30px;
@@ -73,6 +75,12 @@
    align-self:flex-end;
 }
 
+.userChat{
+    display: flex;
+    flex-direction: column;
+   align-items: flex-end;
+}
+
 .user .userChat .chatContent{
     flex-direction: row-reverse;
     justify-content: flex-start;
@@ -81,8 +89,8 @@
 
 .user .userChat .chatContent p{
     max-width: max-content;
-    padding: 10px 20px;
-    border-radius: 10px 0px 10px 10px;
+    /* padding: 10px 20px;
+    border-radius: 10px 0px 10px 10px; */
     
 }
 

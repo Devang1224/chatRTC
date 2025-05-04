@@ -22,6 +22,7 @@ const InputSection = () => {
   const handleKey = (e) => {
     e.code == "Enter" && handleSend();
   };
+// console.log("receiverData from input section",receiverData.ConvoId)
 
   const handleSend = async () => {
     try {
@@ -38,10 +39,12 @@ const InputSection = () => {
         type:"UPDATE_CONVO",
         payload:{
           lastMessage:message,
-          updatedAt:res.data?.data?.createdAt,
+          updatedAt:new Date(),
           _id:receiverData.ConvoId
         }
        })
+      //  console.log("receiverData.ConvoId from input section",receiverData.ConvoId)
+       console.log("emitted message",message)
         socket.emit("newMessage", {
           conversationId: receiverData.ConvoId,
           sender: data.userDetails._id, // sender's Id

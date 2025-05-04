@@ -45,11 +45,11 @@ const Login = () => {
       <form className="loginform" onSubmit={handleSubmit}>
         <p className="form-title">Sign in to your account</p>
         <div className="input-container">
-          <input type="text" placeholder="devang" required />
+          <input type="text" placeholder="guest" required />
           <span></span>
         </div>
         <div className="input-container">
-          <input type="password" placeholder="devangmehra" required />
+          <input type="password" placeholder="Guest*00" required />
         </div>
         {error && (
           <p style={{ color: "#f61818ea", textAlign: "center" }}>{error}</p>

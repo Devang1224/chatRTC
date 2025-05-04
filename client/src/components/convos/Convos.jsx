@@ -13,7 +13,7 @@ const Convos = () => {
   const [loading, setLoading] = useState(false);
   const [chattingTo, setChattingTo] = useState("");
 
-console.log("receiverData",receiverData)
+console.log("receiverData from convos",receiverData)
 
 const fetchConvos = async () => {
   try {

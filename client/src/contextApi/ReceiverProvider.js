@@ -38,11 +38,13 @@ const ReceiverProvider = ({children}) => {
                 return {
                     ...state,
                     Convos: state.Convos?.map((item) => {
+
                         if(item._id === action.payload._id) {
+                            console.log(item._id,action.payload._id);
                             return {
                                 ...item,
                                 lastMessage: action.payload.lastMessage,
-                                updatedAt: new Date(action.payload.updatedAt)
+                                updatedAt: new Date()
                             };
                         }
                         return item;

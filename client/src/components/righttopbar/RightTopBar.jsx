@@ -46,7 +46,7 @@ const RightTopBar = () => {
     setOnGoingCall(true);
   };
 
-  console.log("receiverData",receiverData)
+  // console.log("receiverData",receiverData)
 
   // when user joins the chat room
   const handleUserJoined = useCallback(({ User, id }) => {

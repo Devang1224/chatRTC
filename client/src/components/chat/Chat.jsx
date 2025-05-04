@@ -13,7 +13,7 @@ const Chat = ({item}) => {
     setIsDeleted(true);
     try {
       const res = await userRequest
-        .post(`/chat/messages/${item._id}`)
+        .delete(`/chat/messages/${item._id}`)
         .then(() => {})
         .catch((err) => {
           console.log(err);
