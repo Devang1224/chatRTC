@@ -10,14 +10,14 @@ export const useSocket = ()=>{
 
 
 const SocketProvider = ({children}) => {
-// https://chatapprtc-backend-production.up.railway.app
-const socket = useMemo(()=>io("https://chatapprtc-backend-production.up.railway.app",{
+// https://chatrtc-production.up.railway.app/
+const socket = useMemo(()=>io("https://chatrtc-production.up.railway.app/",{
   auth:{
     token:JSON.parse(localStorage.getItem("user"))?.token || ""
   }
 }),[])
 // http://localhost:3000
-// https://chatapprtc-backend-production.up.railway.app
+// https://chatrtc-production.up.railway.app/
   return (
     <socketContext.Provider value={{socket}}>
        {children}
