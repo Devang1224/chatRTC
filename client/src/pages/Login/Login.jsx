@@ -33,12 +33,12 @@ const Login = () => {
       };
   };
 
-// useEffect(()=>{
-//   console.log("data",data)
-//   if(data?.data?.token){
-//     navigate("/")
-//   }
-// },[data.token])
+useEffect(()=>{
+
+  if(data?.data?.token){
+    navigate("/")
+  }
+},[data.token])
 
   return (
     <div className="login_container">

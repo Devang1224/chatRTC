@@ -26,13 +26,22 @@ const InputSection = () => {
 
   const handleSend = async () => {
     try {
-      if (message.trim()?.length != 0) {
-        setMessage((prev) => prev.trim());
+      if (message?.length != 0) {
         const res = await userRequest.post("/chat/message/send", {
           conversationId: receiverData.ConvoId,
           sender: data.userDetails._id, // sender's Id
           senderImage: data.userDetails.profilePic,
-          text: message.trim(),
+          text: message,
+        });
+
+      //  console.log("receiverData.ConvoId from input section",receiverData.ConvoId)
+       console.log("emitted message",message)
+        socket.emit("newMessage", {
+          conversationId: receiverData.ConvoId,
+          sender: data.userDetails._id, // sender's Id
+          senderImage: data.userDetails.profilePic,
+          text: message,
+          _id: res.data?.data?._id,
         });
 
        dispatch({
@@ -43,21 +52,12 @@ const InputSection = () => {
           _id:receiverData.ConvoId
         }
        })
-      //  console.log("receiverData.ConvoId from input section",receiverData.ConvoId)
-       console.log("emitted message",message)
-        socket.emit("newMessage", {
-          conversationId: receiverData.ConvoId,
-          sender: data.userDetails._id, // sender's Id
-          senderImage: data.userDetails.profilePic,
-          text: message,
-          _id: res.data?.data?._id,
-        });
+     setMessage("");
       }
     } catch (err) {
       console.log(err);
     }
 
-    setMessage("");
   };
 
   const handleEmojiClick = (emojiData, event) => {
@@ -129,7 +129,7 @@ const InputSection = () => {
         <input
           type="text"
           placeholder="Type a message . . ."
-          onChange={(e) => setMessage(e.target.value)}
+          onChange={(e) => setMessage(e.target.value.trim())}
           onKeyDown={handleKey}
           value={message}
         />

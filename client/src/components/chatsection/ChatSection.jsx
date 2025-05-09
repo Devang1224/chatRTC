@@ -67,12 +67,13 @@ const ChatSection = () => {
   useEffect(() => {
     getChats();
   }, [getChats]);
+  
 console.log("hasMoreRef",hasMoreRef.current)
   // Handle incoming messages via socket
   useEffect(() => {
     socket.on("Message", (message) => {
       // console.log("receiverId from chat section", receiverData.ConvoId);
-      console.log("message from chat section", message)
+      console.log("message from chat section", message)    
       dispatch({
         type: "UPDATE_CONVO",
         payload: {
