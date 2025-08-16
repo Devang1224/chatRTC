@@ -1,8 +1,7 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:3000";
-// const BASE_URL = "https://chatrtc-production.up.railway.app/";
-
+const BASE_URL = process.env.REACT_APP_BASE_URL;
+console.log("BaseURL",BASE_URL)
 
 export const userRequest = axios.create({
   baseURL: BASE_URL,

@@ -132,25 +132,24 @@ const scrollToBottom = () => {
   return (
     <>
       <div ref={chatContainerRef} className="chat_container">
-      {  (isFetching && chats.length !== 0) && <div>
-            <p style={{color:"#fff",textAlign:"center"}}>Loading...</p>
-          </div>}
-        {chats == null ? (
-         <Loader/>
+
+      {
+        isFetching ? (
+          <Loader/>
         ) : chats.length !== 0 ? (
           chats?.map((item, index) => (
             <div
               ref={scrollRef}
               key={item._id}
               className={`chat ${
-                item.sender === data.userDetails._id ? "user" : "receiver"
+               item.sender === data.userDetails._id ? "user" : "receiver"
               }`}
             >
               <Chat key={item._id} item={item} />
             </div>
           ))
         ) : (
-          <div
+           <div
             style={{
               width: "100%",
               height: "100%",
@@ -166,7 +165,9 @@ const scrollToBottom = () => {
               You currently have no messages.
             </p>
           </div>
-        )}
+        )
+      // )
+      }
       </div>
       <InputSection />
     </>

@@ -10,8 +10,8 @@ export const useSocket = ()=>{
 
 
 const SocketProvider = ({children}) => {
-// https://chatrtc-production.up.railway.app/
-const socket = useMemo(()=>io("http://localhost:3000",{
+
+const socket = useMemo(()=>io(process.env.REACT_APP_BASE_URL,{
   auth:{
     token:JSON.parse(localStorage.getItem("user"))?.token || ""
   }

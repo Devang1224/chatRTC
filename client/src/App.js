@@ -12,7 +12,7 @@ function App() {
   const { data } = useContext(userContext);
 
   const ProtectedRoute = ({ children }) => {
-    console.log("data",data)
+
     if (!data.token) {
       return <Navigate to="login" />;
     }

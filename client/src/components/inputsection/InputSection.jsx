@@ -10,6 +10,7 @@ import EmojiPicker from "emoji-picker-react";
 import SentimentSatisfiedAltIcon from "@mui/icons-material/SentimentSatisfiedAlt";
 import MicIcon from "@mui/icons-material/Mic";
 import StopIcon from "@mui/icons-material/Stop";
+import Loader from "../ui/loader/Loader";
 
 const InputSection = () => {
   const [message, setMessage] = useState("");
@@ -18,7 +19,7 @@ const InputSection = () => {
   const { socket } = useSocket();
   const [emojiContainer, setEmojiContainer] = useState(false);
   const {dispatch} = useContext(receiverContext);
-
+  const [isSending,setIsSending] = useState(false );
   const handleKey = (e) => {
     e.code == "Enter" && handleSend();
   };
@@ -26,7 +27,8 @@ const InputSection = () => {
 
   const handleSend = async () => {
     try {
-      if (message?.length != 0) {
+      if (message.trim()?.length != 0) {
+        setIsSending(true);
         const res = await userRequest.post("/chat/message/send", {
           conversationId: receiverData.ConvoId,
           sender: data.userDetails._id, // sender's Id
@@ -53,9 +55,12 @@ const InputSection = () => {
         }
        })
      setMessage("");
+    setIsSending(false);
+
       }
     } catch (err) {
       console.log(err);
+       
     }
 
   };
@@ -129,13 +134,13 @@ const InputSection = () => {
         <input
           type="text"
           placeholder="Type a message . . ."
-          onChange={(e) => setMessage(e.target.value.trim())}
+          onChange={(e) => setMessage(e.target.value)}
           onKeyDown={handleKey}
           value={message}
         />
-
         <div className="send" onClick={handleSend}>
-          <SendIcon />
+           { isSending ? <Loader size={24}/> :<SendIcon />
+           }
         </div>
       </div>
 

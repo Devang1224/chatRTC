@@ -2,10 +2,10 @@ import React from 'react'
 import "./loader.css"
 import { CircularProgress } from "@mui/material";
 
-const Loader = () => {
+const Loader = ({size}) => {
   return (
     <div className="loader_container">
-       <CircularProgress/>
+       <CircularProgress size={size || 32}/>
     </div>
   )
 }
